@@ -19,3 +19,14 @@ The multisig contract can be invoked to request any operation on other smart con
 The `multisig` directory contains 2 directories:
 - cameligo: for smart contracts implementation in cameligo and `ligo` command lines for simulating all entrypoints
 - jsligo: for smart contracts implementation in JSligo and `ligo` command lines for simulating all entrypoints
+
+## Compiling / testing / deploying
+
+This repository provides a Makefile for compiling and testing smart contracts. One can type `make` to display all available rules. 
+The `make all` command will clean all produced smart contracts, then compile smart contracts and then launch tests.
+
+The `make compile` command triggers the compilation of smart contracts.
+
+The `make test` command launches tests oon compiled smart contracts.
+
+The `make deploy` command deploys smart contracts (depending on .env file information).

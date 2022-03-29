@@ -23,9 +23,9 @@ compile_ml: cameligo/contract.mligo
 
 clean:
 	@echo "Removing Michelson files"
-	@rm compiled/*.tz
+	@rm -f compiled/*.tz
 	@echo "Removing Michelson 'json format' files"
-	@rm compiled/*.json
+	@rm -f compiled/*.json
 
 test: tests/multisig.test.jsligo
 	@echo "Running tests"
