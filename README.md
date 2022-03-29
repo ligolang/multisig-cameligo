@@ -23,10 +23,10 @@ The `multisig` directory contains 2 directories:
 ## Compiling / testing / deploying
 
 This repository provides a Makefile for compiling and testing smart contracts. One can type `make` to display all available rules. 
-The `make all` command will clean all produced smart contracts, then compile smart contracts and then launch tests.
+The `make all` command will delete the compiled smart contract, then compile the smart contract and then launch tests.
 
-The `make compile` command triggers the compilation of smart contracts.
+The `make compile` command triggers the compilation of the smart contract.
 
-The `make test` command launches tests oon compiled smart contracts.
+The `make test` command launches tests on the compiled smart contract.
 
-The `make deploy` command deploys smart contracts (depending on .env file information).
+The `make originate` command deploys the smart contract (depending on .env file information).
