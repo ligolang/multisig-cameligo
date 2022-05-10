@@ -1,5 +1,5 @@
 ligo=docker run --rm -v "$$PWD":"$$PWD" -w "$$PWD" ligolang/ligo:next
-protocol=--protocol hangzhou
+protocol=--protocol ithaca
 json=--michelson-format json
 
 all: clean compile test
@@ -11,11 +11,12 @@ help:
 	@echo  '  clean           - Remove generated Michelson and JavaScript files'
 	@echo  '  test            - Run Ligo tests'
 	@echo  '  originate       - Deploy multisig smart contract (typescript using Taquito)'
-	
+
 
 compile: compile_ml
 
 compile_ml: cameligo/contract.mligo
+	@if [ ! -d ./compiled ]; then mkdir ./compiled ; fi
 	@echo "Compiling to Michelson"
 	@$(ligo) compile contract cameligo/contract.mligo $(protocol) > compiled/Multisig_mligo.tz
 	@echo "Compiling to Michelson in JSON format"

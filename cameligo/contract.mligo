@@ -4,23 +4,22 @@
 #import "conditions.mligo" "Conditions"
 #import "contracts/fa2.mligo" "FA2"
 
-
 // ===============================================================================================
 
 module Preamble = struct
     [@inline]
-    let prepare_new_proposal (params, storage: Parameter.Types.proposal_params * Storage.Types.t) : Storage.Types.proposal = 
+    let prepare_new_proposal (params, storage: Parameter.Types.proposal_params * Storage.Types.t) : Storage.Types.proposal =
         let () = Conditions.only_signer storage in
-        let () = Conditions.amount_must_be_zero_tez Tezos.amount in 
+        let () = Conditions.amount_must_be_zero_tez Tezos.amount in
         Storage.Utils.create_proposal params
 
     [@inline]
-    let retrieve_a_proposal (proposal_number, storage: Parameter.Types.proposal_number * Storage.Types.t) : Storage.Types.proposal = 
+    let retrieve_a_proposal (proposal_number, storage: Parameter.Types.proposal_number * Storage.Types.t) : Storage.Types.proposal =
         let () = Conditions.only_signer storage in
         let target_proposal = Storage.Utils.retrieve_proposal(proposal_number, storage) in
         let () = Conditions.not_yet_signer target_proposal in
         target_proposal
-end 
+end
 
 // ===============================================================================================
 
@@ -30,7 +29,7 @@ type result = operation list * Storage.Types.t
 (**
  * Proposal creation
  *)
-let create_proposal (params, storage : Parameter.Types.proposal_params * Storage.Types.t) : result = 
+let create_proposal (params, storage : Parameter.Types.proposal_params * Storage.Types.t) : result =
     let proposal = Preamble.prepare_new_proposal(params, storage) in
     let storage = Storage.Utils.register_proposal(proposal, storage) in
     (Constants.no_operation, storage)
@@ -39,7 +38,7 @@ let create_proposal (params, storage : Parameter.Types.proposal_params * Storage
  * Proposal signature
  *)
 
- // LIGO INFO UNCURRIED FUNCTION DOESN'T WORK 
+ // LIGO INFO UNCURRIED FUNCTION DOESN'T WORK
 let sign_proposal (proposal_number, storage : Parameter.Types.proposal_number * Storage.Types.t) : result =
     let proposal = Preamble.retrieve_a_proposal(proposal_number, storage) in
 
@@ -54,7 +53,7 @@ let sign_proposal (proposal_number, storage : Parameter.Types.proposal_number * 
 
 let main (action, storage : request) : result =
     match action with
-    | Create_proposal(proposal_params) -> 
+    | Create_proposal(proposal_params) ->
         create_proposal (proposal_params, storage)
-    | Sign_proposal(proposal_number) -> 
+    | Sign_proposal(proposal_number) ->
         sign_proposal (proposal_number, storage)

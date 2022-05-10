@@ -4,7 +4,7 @@
 
 
 module Types = struct
-    type proposal = 
+    type proposal =
     [@layout:comb]
     {
         approved_signers: address set;
@@ -15,7 +15,7 @@ module Types = struct
         timestamp: timestamp;
     }
 
-    type t = 
+    type t =
     [@layout:comb]
     {
         proposal_counter: nat;
@@ -26,7 +26,7 @@ module Types = struct
 end
 
 module Utils = struct
-    [@inline] 
+    [@inline]
     let new_storage (signers, threshold: address set * nat) : Types.t =
         {
             proposal_counter = 0n;
@@ -37,48 +37,48 @@ module Utils = struct
 
     [@inline]
     let create_proposal (params: Parameter.Types.proposal_params) : Types.proposal =
-        { 
+        {
             approved_signers = Set.literal [Tezos.sender];
             executed         = false;
             number_of_signer = 1n;
             target_fa2       = params.target_fa2;
             timestamp        = Tezos.now;
             transfers        = params.transfers;
-        } 
-    
+        }
+
     [@inline]
     let register_proposal (proposal, storage: Types.proposal * Types.t) : Types.t =
         let proposal_counter = storage.proposal_counter + 1n in
         let proposal_map = Big_map.add proposal_counter proposal storage.proposal_map in
-        { 
-            storage with 
-            proposal_map     = proposal_map; 
-            proposal_counter = proposal_counter 
+        {
+            storage with
+            proposal_map     = proposal_map;
+            proposal_counter = proposal_counter
         }
 
     [@inline]
-    let retrieve_proposal (proposal_number, storage : nat * Types.t) : Types.proposal = 
+    let retrieve_proposal (proposal_number, storage : nat * Types.t) : Types.proposal =
         match Big_map.find_opt proposal_number storage.proposal_map with
         | None -> failwith Errors.no_proposal_exist
         | Some(proposal) -> proposal
 
 
     [@inline]
-    let add_signer_to_proposal (proposal, signer, threshold: Types.proposal * address * nat) : Types.proposal = 
+    let add_signer_to_proposal (proposal, signer, threshold: Types.proposal * address * nat) : Types.proposal =
         let approved_signers : address set = Set.add signer proposal.approved_signers in
-        let executed = Set.size approved_signers >= threshold || proposal.executed in
-        { 
-            proposal with 
+        let executed = Set.cardinal approved_signers >= threshold || proposal.executed in
+        {
+            proposal with
             approved_signers = approved_signers;
             number_of_signer = proposal.number_of_signer + 1n ;
-            executed         = executed 
+            executed         = executed
         }
 
     [@inline]
     let update_proposal (proposal_number, proposal, storage: Parameter.Types.proposal_number * Types.proposal * Types.t) : Types.t =
         let proposal_map = Map.update proposal_number (Some proposal) storage.proposal_map in
-        { 
-            storage with 
-            proposal_map = proposal_map 
+        {
+            storage with
+            proposal_map = proposal_map
         }
 end
