@@ -22,6 +22,7 @@ module Types = struct
         proposal_map    : (nat, proposal) big_map;
         signers         : address set;
         threshold       : nat;
+        metadata        : (string, bytes) big_map;
     }
 end
 
@@ -33,6 +34,7 @@ module Utils = struct
             proposal_map     = (Big_map.empty : (nat, Types.proposal) big_map);
             signers          = signers;
             threshold        = threshold;
+            metadata         = (Big_map.empty: (string, bytes) big_map);
         }
 
     [@inline]
@@ -76,7 +78,7 @@ module Utils = struct
 
     [@inline]
     let update_proposal (proposal_number, proposal, storage: Parameter.Types.proposal_number * Types.proposal * Types.t) : Types.t =
-        let proposal_map = Map.update proposal_number (Some proposal) storage.proposal_map in
+        let proposal_map = Big_map.update proposal_number (Some proposal) storage.proposal_map in
         {
             storage with
             proposal_map = proposal_map

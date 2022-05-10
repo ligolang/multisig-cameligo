@@ -46,12 +46,14 @@ const signers: set<address> = Set.add(
 const threshold: nat = 3 as nat;
 const proposal_map: big_map<nat, Main.Storage.Types.proposal> = Big_map.empty;
 const proposal_counter: nat = 0 as nat;
+const metadata_initial: big_map<string, bytes> = Big_map.empty;
 const c: unit = Test.log("here");
 const storage: Main.Storage.Types.t = ({
     signers: signers,
     threshold: threshold,
     proposal_map: proposal_map,
-    proposal_counter: proposal_counter
+    proposal_counter: proposal_counter,
+    metadata: metadata_initial
 });
 const v: unit = Test.log("here");
 
@@ -201,7 +203,7 @@ const _signer_creates_proposal_signers_sign_proposal_execute_works = ([mainf, ma
     ])) as FA2.TokenMetadata.t;
 
     const operators: FA2.Operators.t = Big_map.literal(list([
-        [[alice, addr], Set.add(1 as nat, Set.empty)]
+        [[alice, addr], Set.add(1 as nat, Set.empty as set<nat>)]
     ])) as FA2.Operators.t;
 
     const storage_fa2 = {
@@ -275,7 +277,7 @@ const _signer_creates_proposal_signers_sign_proposal_execute_over_threshold_work
     ])) as FA2.TokenMetadata.t;
 
     const operators: FA2.Operators.t = Big_map.literal(list([
-        [[alice, addr], Set.add(1 as nat, Set.empty)]
+        [[alice, addr], Set.add(1 as nat, Set.empty as set<nat>)]
     ])) as FA2.Operators.t;
 
     const storage_fa2 = {

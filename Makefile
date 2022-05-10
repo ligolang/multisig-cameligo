@@ -1,4 +1,4 @@
-ligo=docker run --rm -v "$$PWD":"$$PWD" -w "$$PWD" ligolang/ligo:next
+ligo=docker run --rm -v "$$PWD":"$$PWD" -w "$$PWD" ligolang/ligo:0.41.0
 protocol=--protocol ithaca
 json=--michelson-format json
 
