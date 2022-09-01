@@ -40,11 +40,11 @@ module Utils = struct
     [@inline]
     let create_proposal (params: Parameter.Types.proposal_params) : Types.proposal =
         {
-            approved_signers = Set.literal [Tezos.sender];
+            approved_signers = Set.literal [(Tezos.get_sender ())];
             executed         = false;
             number_of_signer = 1n;
             target_fa2       = params.target_fa2;
-            timestamp        = Tezos.now;
+            timestamp        = (Tezos.get_now ());
             transfers        = params.transfers;
         }
 

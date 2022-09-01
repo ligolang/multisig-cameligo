@@ -1,4 +1,5 @@
 #import "../fa2/fa2.mligo" "FA2"
+
 module Types = struct
     type proposal_params = 
     [@layout:comb]
