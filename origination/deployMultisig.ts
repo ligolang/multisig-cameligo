@@ -1,9 +1,10 @@
 import { InMemorySigner } from '@taquito/signer'
 import { TezosToolkit, MichelsonMap } from '@taquito/taquito'
 import multisig from '../compiled/Multisig_mligo.json'
-
-const rpc = 'https://hangzhounet.smartpy.io/'
-const pk: string = ''
+import { buf2hex } from "@taquito/utils";
+import metadata from "./metadata.json";
+const rpc = process.env.RPC; //"http://127.0.0.1:8732"
+const pk: string = process.env.ADMIN_PK || undefined;
 const Tezos = new TezosToolkit(rpc)
 const signer = new InMemorySigner(pk)
 Tezos.setProvider({ signer: signer })
@@ -17,6 +18,10 @@ const signers: Array<string> = [
 
 async function originate() {
   const storage = {
+    metadata: MichelsonMap.fromLiteral({
+      "": buf2hex(Buffer.from("tezos-storage:contents")),
+      contents: buf2hex(Buffer.from(JSON.stringify(metadata))),
+    }), 
     signers: signers,
     threshold: 3,
     proposal_map: new MichelsonMap(),
@@ -33,6 +38,7 @@ async function originate() {
     console.log('confirmed multisig: ', originated.contractAddress)
   } catch (error: any) {
     console.log(error)
+    return process.exit(1)
   }
 }
 

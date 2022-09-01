@@ -1,0 +1,19 @@
+{
+    "name": "multisig Example",
+    "description": "An Example Multisig Contract",
+    "version": "1.0.0",
+    "license": {
+        "name": "MIT"
+    },
+    "authors": [
+        "smart-chain <tezos@smart-chain.fr>"
+    ],
+    "homepage": "https://github.com/ligolang/multisig-cameligo",
+    "source": {
+        "tools": "cameligo",
+        "location": "https://github.com/ligolang/multisig-cameligo/contracts"
+    },
+    "interfaces": [
+        "TZIP-016"
+    ]
+}
