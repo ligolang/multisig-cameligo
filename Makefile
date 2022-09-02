@@ -28,11 +28,11 @@ clean:
 	@echo "Removing Michelson 'json format' files"
 	@rm -f compiled/*.json
 
-test: tests/multisig.test.jsligo
+test: test/multisig.test.jsligo
 	@echo "Running tests"
-	@$(ligo_compiler) run test tests/multisig.test.jsligo $(PROTOCOL_OPT)
+	@$(ligo_compiler) run test test/multisig.test.jsligo $(PROTOCOL_OPT)
 	@echo "Running mutation tests"
-	@$(ligo_compiler) run test tests/multisig_mutation.test.jsligo $(PROTOCOL_OPT)
+	@$(ligo_compiler) run test test/multisig_mutation.test.jsligo $(PROTOCOL_OPT)
 
 deploy: origination/deployMultisig.ts compile
 	@if [ ! -f ./origination/metadata.json ]; then cp origination/metadata.json.dist \
