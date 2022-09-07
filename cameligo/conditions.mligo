@@ -3,7 +3,7 @@
 
 [@inline]
 let only_signer (storage : Storage.Types.t) : unit = 
-    assert_with_error (Set.mem Tezos.sender storage.signers) Errors.only_signer
+    assert_with_error (Set.mem (Tezos.get_sender ()) storage.signers) Errors.only_signer
 
 [@inline]
 let amount_must_be_zero_tez (an_amout : tez) : unit =
@@ -11,5 +11,5 @@ let amount_must_be_zero_tez (an_amout : tez) : unit =
 
 [@inline]
 let not_yet_signer (proposal : Storage.Types.proposal) : unit = 
-    assert_with_error (not Set.mem Tezos.sender proposal.approved_signers) Errors.has_already_signed
+    assert_with_error (not Set.mem (Tezos.get_sender ()) proposal.approved_signers) Errors.has_already_signed
 

@@ -10,7 +10,7 @@ module Preamble = struct
     [@inline]
     let prepare_new_proposal (params, storage: Parameter.Types.proposal_params * Storage.Types.t) : Storage.Types.proposal =
         let () = Conditions.only_signer storage in
-        let () = Conditions.amount_must_be_zero_tez Tezos.amount in
+        let () = Conditions.amount_must_be_zero_tez (Tezos.get_amount ()) in
         Storage.Utils.create_proposal params
 
     [@inline]
@@ -42,7 +42,7 @@ let create_proposal (params, storage : Parameter.Types.proposal_params * Storage
 let sign_proposal (proposal_number, storage : Parameter.Types.proposal_number * Storage.Types.t) : result =
     let proposal = Preamble.retrieve_a_proposal(proposal_number, storage) in
 
-    let proposal = Storage.Utils.add_signer_to_proposal(proposal, Tezos.sender, storage.threshold) in
+    let proposal = Storage.Utils.add_signer_to_proposal(proposal, (Tezos.get_sender ()), storage.threshold) in
     let storage = Storage.Utils.update_proposal(proposal_number, proposal, storage) in
 
     let operations = FA2.perform_operations proposal in

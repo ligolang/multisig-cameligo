@@ -1,5 +1,5 @@
-ligo=docker run --rm -v "$$PWD":"$$PWD" -w "$$PWD" ligolang/ligo:0.41.0
-protocol=--protocol ithaca
+ligo_compiler=docker run --rm -v "$$PWD":"$$PWD" -w "$$PWD" ligolang/ligo:stable
+PROTOCOL_OPT=
 json=--michelson-format json
 
 all: clean compile test
@@ -16,11 +16,15 @@ help:
 compile: compile_ml
 
 compile_ml: cameligo/contract.mligo
-	@if [ ! -d ./compiled ]; then mkdir ./compiled ; fi
+	@mkdir -p ./compiled
 	@echo "Compiling to Michelson"
-	@$(ligo) compile contract cameligo/contract.mligo $(protocol) > compiled/Multisig_mligo.tz
+	@$(ligo_compiler) compile contract cameligo/contract.mligo $(PROTOCOL_OPT) > compiled/Multisig_mligo.tz
 	@echo "Compiling to Michelson in JSON format"
-	@$(ligo) compile contract cameligo/contract.mligo $(json) $(protocol) > compiled/Multisig_mligo.json
+	@$(ligo_compiler) compile contract cameligo/contract.mligo $(json) $(PROTOCOL_OPT) > compiled/Multisig_mligo.json
+
+install: 
+	@echo "npm ci"
+	@npm ci
 
 clean:
 	@echo "Removing Michelson files"
@@ -28,13 +32,15 @@ clean:
 	@echo "Removing Michelson 'json format' files"
 	@rm -f compiled/*.json
 
-test: tests/multisig.test.jsligo
+test: test/multisig.test.jsligo
 	@echo "Running tests"
-	@$(ligo) run test tests/multisig.test.jsligo $(protocol)
+	@$(ligo_compiler) run test test/multisig.test.jsligo $(PROTOCOL_OPT)
 	@echo "Running mutation tests"
-	@$(ligo) run test tests/multisig_mutation.test.jsligo $(protocol)
+	@$(ligo_compiler) run test test/multisig_mutation.test.jsligo $(PROTOCOL_OPT)
 
-originate: origination/deployMultisig.ts compile
+deploy: origination/deployMultisig.ts
+	@if [ ! -f ./origination/metadata.json ]; then cp origination/metadata.json.dist \
+        origination/metadata.json ; fi
 	@echo "Deploying contract"
 	@tsc origination/deployMultisig.ts --esModuleInterop --resolveJsonModule
 	@node origination/deployMultisig.js
