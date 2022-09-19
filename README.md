@@ -22,11 +22,16 @@ The `multisig` directory contains 2 directories:
 
 ## Compiling / testing / deploying
 
-This repository provides a Makefile for compiling and testing smart contracts. One can type `make` to display all available rules. 
+This repository provides a Makefile for compiling and testing smart contracts. One can type `make` to display all available rules.
 The `make all` command will delete the compiled smart contract, then compile the smart contract and then launch tests.
 
 The `make compile` command triggers the compilation of the smart contract.
 
 The `make test` command launches tests on the compiled smart contract.
 
-The `make originate` command deploys the smart contract (depending on .env file information).
+The `make deploy` command deploys the smart contract (depending on .env file information).
+
+You can also override make parameters by running :
+```sh
+make compile ligo_compile=<LIGO_EXECUTABLE> PROTOCOL_OPT="--protocol <PROTOCOL>"
+```
