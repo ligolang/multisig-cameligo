@@ -16,7 +16,7 @@ const _test_mutation_func = (func: (mainf: Test_Multisig.func_main) => unit): un
     match(Test.mutation_test(Test_Multisig.Main.main, func), {
         None: () => unit,
         Some: pmutation => { 
-            const mut: option<string> = Test.save_mutation("mutations", pmutation[1]);
+            const _mut: option<string> = Test.save_mutation("mutations", pmutation[1]);
         }
     });
 }
