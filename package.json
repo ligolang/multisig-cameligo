@@ -1,21 +1,26 @@
 {
-  "name": "multisig",
+  "name": "@ligo/multisig",
   "version": "1.0.0",
-  "description": "This exeample is meant to illustrate a transaction requiring multiple people's confirmation before the operation is executed. With this MVP example smart-contrat, we show how to use multisig-type confirmation from M of N signers in order to send an operation. In this example, we will bind a call to a token transfer from another smart-contrat, since it’s the most classic use case ( Fungible Asset 2 ).",
-  "main": "index.js",
+  "main": "cameligo/contract.mligo",
+  "description": "Illustrates a transaction requiring multiple people's confirmation before the operation is executed",
+  "author": "LIGO developers",
   "directories": {
-    "test": "tests"
+    "lib": "lib",
+    "test": "test"
   },
-  "dependencies": {
-    "@taquito/signer": "^11.2.0",
-    "@taquito/taquito": "^11.2.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ligolang/multisig-cameligo.git"
   },
-  "devDependencies": {
-    "typescript": "^4.5.5"
+  "keywords": [
+    "ligo",
+    "tezos",
+    "tezos-ligo",
+    "cameligo"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ligolang/multisig-cameligo/issues"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+  "homepage": "https://ligolang.org/"
 }
