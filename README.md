@@ -33,5 +33,5 @@ The `make deploy` command deploys the smart contract (depending on .env file inf
 
 You can also override make parameters by running :
 ```sh
-make compile ligo_compile=<LIGO_EXECUTABLE> PROTOCOL_OPT="--protocol <PROTOCOL>"
+make compile ligo_compile=<LIGO_EXECUTABLE> protocol_opt="--protocol <PROTOCOL>"
 ```

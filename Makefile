@@ -1,7 +1,7 @@
 ligo_compiler?=docker run --rm -v "$(PWD)":"$(PWD)" -w "$(PWD)" ligolang/ligo:stable
 # ^ Override this variable when you run make command by make <COMMAND> ligo_compiler=<LIGO_EXECUTABLE>
 # ^ Otherwise use default one (you'll need docker)
-PROTOCOL_OPT?=
+protocol_opt?=
 json=--michelson-format json
 
 all: clean compile test
@@ -20,9 +20,9 @@ compile: compile_ml
 compile_ml: cameligo/contract.mligo
 	@mkdir -p ./compiled
 	@echo "Compiling to Michelson"
-	@$(ligo_compiler) compile contract cameligo/contract.mligo $(PROTOCOL_OPT) > compiled/Multisig_mligo.tz
+	@$(ligo_compiler) compile contract cameligo/contract.mligo $(protocol_opt) > compiled/Multisig_mligo.tz
 	@echo "Compiling to Michelson in JSON format"
-	@$(ligo_compiler) compile contract cameligo/contract.mligo $(json) $(PROTOCOL_OPT) > compiled/Multisig_mligo.json
+	@$(ligo_compiler) compile contract cameligo/contract.mligo $(json) $(protocol_opt) > compiled/Multisig_mligo.json
 
 install:
 	@echo "npm ci"
@@ -36,9 +36,9 @@ clean:
 
 test: test/multisig.test.jsligo
 	@echo "Running tests"
-	@$(ligo_compiler) run test test/multisig.test.jsligo $(PROTOCOL_OPT)
+	@$(ligo_compiler) run test test/multisig.test.jsligo $(protocol_opt)
 	@echo "Running mutation tests"
-	@$(ligo_compiler) run test test/multisig_mutation.test.jsligo $(PROTOCOL_OPT)
+	@$(ligo_compiler) run test test/multisig_mutation.test.jsligo $(protocol_opt)
 
 deploy: origination/deployMultisig.ts
 	@if [ ! -f ./origination/metadata.json ]; then cp origination/metadata.json.dist \
