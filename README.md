@@ -16,7 +16,7 @@ The multisig contract can be invoked to request any operation on other smart con
 
 ## Content
 
-The `multisig` project contains main 2 directories:
+The `multisig` project contains 2 main directories:
 - `cameligo`: contains smart contracts implementation in cameligo
 - `fa2` - contains implementation of FA2 token used by the multisig contract
 
