@@ -16,9 +16,9 @@ The multisig contract can be invoked to request any operation on other smart con
 
 ## Content
 
-The `multisig` directory contains 2 directories:
-- cameligo: for smart contracts implementation in cameligo and `ligo` command lines for simulating all entrypoints
-- jsligo: for smart contracts implementation in JSligo and `ligo` command lines for simulating all entrypoints
+The `multisig` project contains main 2 directories:
+- `cameligo`: contains smart contracts implementation in cameligo
+- `fa2` - contains implementation of FA2 token used by the multisig contract
 
 ## Compiling / testing / deploying
 
