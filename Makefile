@@ -24,10 +24,6 @@ compile_ml: src/contract.mligo
 	@echo "Compiling to Michelson in JSON format"
 	@$(ligo_compiler) compile contract src/contract.mligo $(json) $(protocol_opt) > compiled/Multisig.json
 
-install:
-	@echo "npm ci"
-	@npm ci
-
 clean:
 	@echo "Removing Michelson files"
 	@rm -f compiled/*.tz
