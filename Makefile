@@ -20,9 +20,9 @@ compile: compile_ml
 compile_ml: src/contract.mligo
 	@mkdir -p ./compiled
 	@echo "Compiling to Michelson"
-	@$(ligo_compiler) compile contract src/contract.mligo $(protocol_opt) > compiled/Multisig_mligo.tz
+	@$(ligo_compiler) compile contract src/contract.mligo $(protocol_opt) > compiled/Multisig.tz
 	@echo "Compiling to Michelson in JSON format"
-	@$(ligo_compiler) compile contract src/contract.mligo $(json) $(protocol_opt) > compiled/Multisig_mligo.json
+	@$(ligo_compiler) compile contract src/contract.mligo $(json) $(protocol_opt) > compiled/Multisig.json
 
 install:
 	@echo "npm ci"

@@ -4,7 +4,7 @@ import { buf2hex } from "@taquito/utils";
 import chalk from "chalk";
 import { Spinner } from "cli-spinner";
 import dotenv from "dotenv";
-import multisig from "../compiled/Multisig_mligo.json";
+import multisig from "../compiled/Multisig.json";
 import metadata from "./metadata.json";
 
 dotenv.config();
