@@ -17,16 +17,12 @@ help:
 
 compile: compile_ml
 
-compile_ml: cameligo/contract.mligo
+compile_ml: src/contract.mligo
 	@mkdir -p ./compiled
 	@echo "Compiling to Michelson"
-	@$(ligo_compiler) compile contract cameligo/contract.mligo $(protocol_opt) > compiled/Multisig_mligo.tz
+	@$(ligo_compiler) compile contract src/contract.mligo $(protocol_opt) > compiled/Multisig.tz
 	@echo "Compiling to Michelson in JSON format"
-	@$(ligo_compiler) compile contract cameligo/contract.mligo $(json) $(protocol_opt) > compiled/Multisig_mligo.json
-
-install:
-	@echo "npm ci"
-	@npm ci
+	@$(ligo_compiler) compile contract src/contract.mligo $(json) $(protocol_opt) > compiled/Multisig.json
 
 clean:
 	@echo "Removing Michelson files"
@@ -40,9 +36,14 @@ test: test/multisig.test.jsligo
 	@echo "Running mutation tests"
 	@$(ligo_compiler) run test test/multisig_mutation.test.jsligo $(protocol_opt)
 
-deploy: origination/deployMultisig.ts
-	@if [ ! -f ./origination/metadata.json ]; then cp origination/metadata.json.dist \
-        origination/metadata.json ; fi
-	@echo "Deploying contract"
-	@tsc origination/deployMultisig.ts --esModuleInterop --resolveJsonModule
-	@node origination/deployMultisig.js
+deploy: node_modules deploy.js
+
+deploy.js:
+	@if [ ! -f ./deploy/metadata.json ]; then cp deploy/metadata.json.dist deploy/metadata.json ; fi
+	@echo "Running deploy script\n"
+	@cd deploy && npm start
+
+node_modules:
+	@echo "Installing deploy script dependencies"
+	@cd deploy && npm install
+	@echo ""

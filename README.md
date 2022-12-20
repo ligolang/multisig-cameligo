@@ -17,21 +17,30 @@ The multisig contract can be invoked to request any operation on other smart con
 ## Content
 
 The `multisig` project contains 2 main directories:
-- `cameligo`: contains smart contracts implementation in cameligo
+
+- `src`: contains smart contracts implementation in cameligo
 - `fa2` - contains implementation of FA2 token used by the multisig contract
+
+## Pre-requisites
+
+You need to install the following tools:
+
+- [NodeJS & Npm](https://nodejs.org/en/download/)
+- [LIGO](https://ligolang.org/docs/intro/installation/) **or** [Docker](https://docs.docker.com/get-docker/)
 
 ## Compiling / testing / deploying
 
 This repository provides a Makefile for compiling and testing smart contracts. One can type `make` to display all available rules.
-The `make all` command will delete the compiled smart contract, then compile the smart contract and then launch tests.
+The `make all` command will clean all produced smart contracts, then compile smart contracts and then launch tests.
 
-The `make compile` command triggers the compilation of the smart contract.
+- The `make compile` command triggers the compilation of smart contracts (advisor and indice).
 
-The `make test` command launches tests on the compiled smart contract.
+- The `make test` command launches tests oon compiled smart contracts (advisor and indice).
 
-The `make deploy` command deploys the smart contract (depending on .env file information).
+- The `make deploy` command deploys smart contracts. You need to rename `deploy/.env.dist` to `deploy/.env` and **fill the required variables**.
 
-You can also override make parameters by running :
+You can also override `make` parameters by running :
+
 ```sh
-make compile ligo_compile=<LIGO_EXECUTABLE> protocol_opt="--protocol <PROTOCOL>"
+make compile ligo_compiler=<LIGO_EXECUTABLE> protocol_opt="--protocol <PROTOCOL>"
 ```
