@@ -1,6 +1,6 @@
 #import "../fa2/fa2.mligo" "FA2"
-#import "../cameligo/contract.mligo" "Main"
-#import "../cameligo/parameter.mligo" "P"
+#import "../src/contract.mligo" "Main"
+#import "../src/parameter.mligo" "P"
 
 import Types = P.Types
 
