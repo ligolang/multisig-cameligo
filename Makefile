@@ -30,6 +30,7 @@ clean:
 	@echo "Removing Michelson 'json format' files"
 	@rm -f compiled/*.json
 
+.PHONY: test
 test: test/multisig.test.jsligo
 	@echo "Running tests"
 	@$(ligo_compiler) run test test/multisig.test.jsligo $(protocol_opt)
