@@ -32,7 +32,7 @@ module Operators = struct
       failwith Errors.no_owner
 *)
 
-   let assert_update_permission (owner : owner) : unit =
+   [@no_mutation] let assert_update_permission (owner : owner) : unit =
       assert_with_error (owner = (Tezos.get_sender ())) "The sender can only manage operators for his own token"
    (** For an administator
       let admin = tz1.... in
@@ -55,7 +55,8 @@ module Operators = struct
          let auth_tokens = match Big_map.find_opt (owner,operator) operators with
          None -> None | Some (ts) ->
             let ts = Set.remove token_id ts in
-            if (Set.cardinal ts = 0n) then None else Some (ts)
+            [@no_mutation] let ts = if (Set.cardinal ts = 0n) then None else Some (ts) in
+            ts
          in
          Big_map.update (owner,operator) auth_tokens operators
 end
@@ -167,11 +168,11 @@ let balance_of : balance_of -> storage -> operation list * storage =
    let get_balance_info (request : request) : callback =
       let {owner;token_id} = request in
       let ()       = Storage.assert_token_exist  s token_id in
-      let balance_ = if Storage.is_owner_of s owner token_id then 1n else 0n in
+      [@no_mutation] let balance_ = if Storage.is_owner_of s owner token_id then 1n else 0n in
       {request=request;balance=balance_}
    in
    let callback_param = List.map get_balance_info requests in
-   let operation = Tezos.transaction callback_param 0tez callback in
+   [@no_mutation] let operation = Tezos.transaction callback_param 0tez callback in
    ([operation]: operation list),s
 
 (** Update_operators entrypoint *)
@@ -203,7 +204,7 @@ let update_ops : update_operators -> storage -> operation list * storage =
 
 
 type parameter = [@layout:comb] | Transfer of transfer | Balance_of of balance_of | Update_operators of update_operators
-let main ((p,s):(parameter * storage)) = match p with
+let main (p : parameter) (s : storage) = match p with
    Transfer         p -> transfer   p s
 |  Balance_of       p -> balance_of p s
 |  Update_operators p -> update_ops p s

@@ -29,8 +29,9 @@ end
 module Utils = struct
     [@inline]
     let new_storage (signers, threshold: address set * nat) : Types.t =
+        [@no_mutation] let proposal_counter = 0n in
         {
-            proposal_counter = 0n;
+            proposal_counter ;
             proposal_map     = (Big_map.empty : (nat, Types.proposal) big_map);
             signers          = signers;
             threshold        = threshold;
@@ -39,10 +40,11 @@ module Utils = struct
 
     [@inline]
     let create_proposal (params: Parameter.Types.proposal_params) : Types.proposal =
+        [@no_mutation] let number_of_signer = 1n in
         {
             approved_signers = Set.literal [(Tezos.get_sender ())];
             executed         = false;
-            number_of_signer = 1n;
+            number_of_signer ;
             target_fa2       = params.target_fa2;
             timestamp        = (Tezos.get_now ());
             transfers        = params.transfers;
@@ -50,7 +52,7 @@ module Utils = struct
 
     [@inline]
     let register_proposal (proposal, storage: Types.proposal * Types.t) : Types.t =
-        let proposal_counter = storage.proposal_counter + 1n in
+        [@no_mutation] let proposal_counter = storage.proposal_counter + 1n in
         let proposal_map = Big_map.add proposal_counter proposal storage.proposal_map in
         {
             storage with
@@ -69,10 +71,11 @@ module Utils = struct
     let add_signer_to_proposal (proposal, signer, threshold: Types.proposal * address * nat) : Types.proposal =
         let approved_signers : address set = Set.add signer proposal.approved_signers in
         let executed = Set.cardinal approved_signers >= threshold || proposal.executed in
+        [@no_mutation] let number_of_signer = proposal.number_of_signer + 1n in
         {
             proposal with
             approved_signers = approved_signers;
-            number_of_signer = proposal.number_of_signer + 1n ;
+            number_of_signer ;
             executed         = executed
         }
 

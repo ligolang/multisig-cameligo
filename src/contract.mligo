@@ -23,7 +23,6 @@ end
 
 // ===============================================================================================
 
-type request = Parameter.Types.t * Storage.Types.t
 type result = operation list * Storage.Types.t
 
 (**
@@ -51,7 +50,7 @@ let sign_proposal (proposal_number, storage : Parameter.Types.proposal_number * 
 
 // ===============================================================================================
 
-let main (action, storage : request) : result =
+let main (action: Parameter.Types.t) (storage: Storage.Types.t) : result =
     match action with
     | Create_proposal(proposal_params) ->
         create_proposal (proposal_params, storage)

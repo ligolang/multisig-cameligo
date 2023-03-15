@@ -8,7 +8,7 @@ export type func_main = (p: Main.Parameter.Types.t, s: Main.Storage.Types.t) => 
 export type func_mainfa2 = (p: FA2.parameter, s: FA2.storage) =>  [list<operation>, FA2.storage];
 
 
-const assert_error = ([res, expected_error]: [test_exec_result, string]): unit => {
+const assert_error = (res: test_exec_result, expected_error: string): unit => {
     const expected_error2 = Test.eval(expected_error);
     match(res, {
         Fail: (x: test_exec_error) => (
@@ -183,10 +183,7 @@ const _test_signer_signs_unknown_proposal_fails = (mainf: func_main): unit => {
 
 
 
-const _signer_creates_proposal_signers_sign_proposal_execute_works = ([mainf, mainfa2]: [
-    func_main,
-    func_mainfa2
-    ]): unit => {
+const _signer_creates_proposal_signers_sign_proposal_execute_works = (mainf: func_main, mainfa2: func_mainfa2): unit => {
     Test.set_source(alice);
     const [taddr, _, _] = Test.originate(mainf, storage, 0 as tez);
     const contr = Test.to_contract(taddr);
@@ -256,10 +253,7 @@ const _signer_creates_proposal_signers_sign_proposal_execute_works = ([mainf, ma
 };
 
 
-const _signer_creates_proposal_signers_sign_proposal_execute_over_threshold_works = ([mainf, mainfa2]: [
-    func_main,
-    func_mainfa2
-    ]): unit => {
+const _signer_creates_proposal_signers_sign_proposal_execute_over_threshold_works = (mainf: func_main, mainfa2: func_mainfa2): unit => {
     Test.set_source(alice);
     const storage_init = {...storage, threshold: 1 as nat};
     const [taddr, _, _] = Test.originate(mainf, storage_init, 0 as tez);

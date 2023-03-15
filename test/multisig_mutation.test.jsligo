@@ -3,7 +3,7 @@
 type main_tuple = (main_multisig: Test_Multisig.func_main, main_fa2: Test_Multisig.func_mainfa2) => unit;
 
 const _test_mutation_complex = (func: main_tuple): unit => {
-    match(Test.mutation_test([Test_Multisig.Main.main, Test_Multisig.FA2.main], func), {
+    match(Test.mutation_test([Test_Multisig.Main.main, Test_Multisig.FA2.main], ([a, b]) => func(a, b)), {
     None: () => unit,
     Some: pmutation => { 
         Test.log(pmutation[1]);
