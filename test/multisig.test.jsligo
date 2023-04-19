@@ -13,7 +13,7 @@ const assert_error = (res: test_exec_result, expected_error: string): unit => {
     match(res, {
         Fail: (x: test_exec_error) => (
         match (x, {
-            Rejected: (x: [michelson_code, address]) => assert(Test.michelson_equal(x[0], expected_error2)),
+            Rejected: (x: [michelson_program, address]) => assert(Test.michelson_equal(x[0], expected_error2)),
             Balance_too_low : (_ : { contract_too_low : address , contract_balance : tez , spend_request : tez }) 
                 =>  failwith("contract failed: balance too low"),
             Other: (s: string) => failwith(s)
@@ -138,7 +138,7 @@ const _test_signer_signs_proposal_works = (mainf: func_main): unit => {
     const _gas_used: nat = Test.transfer_to_contract_exn(contr, (Sign_proposal(1 as nat) as Types.t), 0 as tez);
     const curr_storage = Test.get_storage(taddr);
     const end_signed_proposal = match(Big_map.find_opt(1 as nat, curr_storage.proposal_map), {
-        Some: (op: proposal) => op,
+        Some: (op) => op,
         None: () => failwith(Main.Conditions.Errors.no_proposal_exist)
     });
     const expected_signer: set<address> = Set.add(
@@ -238,7 +238,7 @@ const _signer_creates_proposal_signers_sign_proposal_execute_works = (mainf: fun
 
     const curr_storage = Test.get_storage(taddr);
     const end_executed_proposal = match(Big_map.find_opt(1 as nat, curr_storage.proposal_map), {
-        Some: (op: proposal) => op,
+        Some: (op) => op,
         None: () => failwith(Main.Conditions.Errors.no_proposal_exist)
     });
 
@@ -305,7 +305,7 @@ const _signer_creates_proposal_signers_sign_proposal_execute_over_threshold_work
     const curr_storage = Test.get_storage(taddr);
     Test.log(curr_storage);
     const end_executed_proposal = match(Big_map.find_opt(1 as nat, curr_storage.proposal_map), {
-        Some: (op: proposal) => op,
+        Some: (op) => op,
         None: () => failwith(Main.Conditions.Errors.no_proposal_exist)
     });
 
