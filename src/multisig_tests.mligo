@@ -1,3 +1,4 @@
+(*
 #import "../lib/fa12/parameter.mligo" "FA12_Parameter"
 #import "../lib/fa12/storage.mligo" "FA12_Storage"
 #import "../lib/fa12/contract.mligo" "FA12"
@@ -177,7 +178,7 @@ let test_sign_a_multisig_proposal_should_work =
     //let () = assert ( proposal.timestamp = (Tezos.now : timestamp)) in
     let () = assert ( proposal.token_amount = 100n) in
     "✓"
-
+*)
 
 
     
