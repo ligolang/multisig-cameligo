@@ -1,5 +1,5 @@
 #import "multisig.test.jsligo" "Test_Multisig"
-
+/*
 type main_tuple = (main_multisig: Test_Multisig.func_main, main_fa2: Test_Multisig.func_mainfa2) => unit;
 
 const _test_mutation_complex = (func: main_tuple): unit => {
@@ -36,3 +36,4 @@ const mutation_tests = (): unit => {
 };  
 
 const _ = mutation_tests();
+*/

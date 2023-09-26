@@ -28,7 +28,8 @@ type result = operation list * Storage.Types.t
 (**
  * Proposal creation
  *)
-let create_proposal (params, storage : Parameter.Types.proposal_params * Storage.Types.t) : result =
+[@entry]
+let create_proposal params (storage : Storage.Types.t) : result =
     let proposal = Preamble.prepare_new_proposal(params, storage) in
     let storage = Storage.Utils.register_proposal(proposal, storage) in
     (Constants.no_operation, storage)
@@ -37,8 +38,8 @@ let create_proposal (params, storage : Parameter.Types.proposal_params * Storage
  * Proposal signature
  *)
 
- // LIGO INFO UNCURRIED FUNCTION DOESN'T WORK
-let sign_proposal (proposal_number, storage : Parameter.Types.proposal_number * Storage.Types.t) : result =
+[@entry]
+let sign_proposal proposal_number (storage : Storage.Types.t) : result =
     let proposal = Preamble.retrieve_a_proposal(proposal_number, storage) in
 
     let proposal = Storage.Utils.add_signer_to_proposal(proposal, (Tezos.get_sender ()), storage.threshold) in
@@ -50,9 +51,10 @@ let sign_proposal (proposal_number, storage : Parameter.Types.proposal_number * 
 
 // ===============================================================================================
 
+// This function is now only used for tests, and will be removed once tests are rewritten
 let main (action: Parameter.Types.t) (storage: Storage.Types.t) : result =
     match action with
     | Create_proposal(proposal_params) ->
-        create_proposal (proposal_params, storage)
+        create_proposal proposal_params storage
     | Sign_proposal(proposal_number) ->
-        sign_proposal (proposal_number, storage)
+        sign_proposal proposal_number storage
