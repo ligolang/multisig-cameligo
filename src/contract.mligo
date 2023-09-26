@@ -49,7 +49,7 @@ let sign_proposal (proposal_number, storage : Parameter.Types.proposal_number * 
     (operations, storage)
 
 // ===============================================================================================
-
+[@entry]
 let main (action: Parameter.Types.t) (storage: Storage.Types.t) : result =
     match action with
     | Create_proposal(proposal_params) ->
