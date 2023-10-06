@@ -6,13 +6,13 @@ import Types = P.Types
 
 const assert_error = (res: test_exec_result, expected_error: string): unit => {
     const expected_error2 = Test.eval(expected_error);
-    match(res) {
-        when(Fail(x)):do{
-        match (x) {
+    return match(res) {
+        when(Fail(x)):
+          match (x) {
             when(Rejected(x)): assert(Test.michelson_equal(x[0], expected_error2));
             when(Balance_too_low(_)):failwith("contract failed: balance too low");
             when(Other(s)): failwith(s);
-        }};
+          };
         when(Success(_)): failwith("Expected to fail but passed");
     };
 };
