@@ -6,6 +6,11 @@
 
 // ===============================================================================================
 
+type proposal_params = Parameter.Types.proposal_params
+type proposal_number = Parameter.Types.proposal_number
+type storage = Storage.Types.t
+type result = operation list * storage
+
 module Preamble = struct
     [@inline]
     let prepare_new_proposal (params, storage: Parameter.Types.proposal_params * Storage.Types.t) : Storage.Types.proposal =
@@ -23,38 +28,26 @@ end
 
 // ===============================================================================================
 
-type result = operation list * Storage.Types.t
-
 (**
  * Proposal creation
  *)
 [@entry]
-let create_proposal params (storage : Storage.Types.t) : result =
-    let proposal = Preamble.prepare_new_proposal(params, storage) in
-    let storage = Storage.Utils.register_proposal(proposal, storage) in
-    (Constants.no_operation, storage)
+let create_proposal (params : proposal_params) (store : storage) : result =
+    let proposal = Preamble.prepare_new_proposal(params, store) in
+    let store = Storage.Utils.register_proposal(proposal, store) in
+    (Constants.no_operation, store)
 
 (**
  * Proposal signature
  *)
 
 [@entry]
-let sign_proposal proposal_number (storage : Storage.Types.t) : result =
-    let proposal = Preamble.retrieve_a_proposal(proposal_number, storage) in
+let sign_proposal (number : proposal_number) (store : storage) : result =
+    let proposal = Preamble.retrieve_a_proposal(number, store) in
 
-    let proposal = Storage.Utils.add_signer_to_proposal(proposal, (Tezos.get_sender ()), storage.threshold) in
-    let storage = Storage.Utils.update_proposal(proposal_number, proposal, storage) in
+    let proposal = Storage.Utils.add_signer_to_proposal(proposal, (Tezos.get_sender ()), store.threshold) in
+    let store = Storage.Utils.update_proposal(number, proposal, store) in
 
     let operations = FA2.perform_operations proposal in
 
-    (operations, storage)
-
-// ===============================================================================================
-
-// This function is now only used for tests, and will be removed once tests are rewritten
-let main (action: Parameter.Types.t) (storage: Storage.Types.t) : result =
-    match action with
-    | Create_proposal(proposal_params) ->
-        create_proposal proposal_params storage
-    | Sign_proposal(proposal_number) ->
-        sign_proposal proposal_number storage
+    (operations, store)

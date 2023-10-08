@@ -9,8 +9,4 @@ module Types = struct
     }
 
     type proposal_number = nat
-
-    type t =
-    | Create_proposal of (proposal_params)
-    | Sign_proposal of (nat)
 end
